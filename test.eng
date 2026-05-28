@@ -1,0 +1,11 @@
+print Starting English-Lang script...
+
+store "Angelo" as username
+print Hello {username}!
+
+create file hello.txt with content This file was created by English-Lang for {username}.
+print File created.
+
+run system command type hello.txt
+
+print Script finished.
