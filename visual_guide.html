@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English-Lang Visual Masterclass</title>
+    <title>English-Lang v2 Visual Masterclass</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
@@ -19,64 +19,50 @@
 
     <!-- Slide 1: Intro -->
     <div id="slide-1" class="slide active flex-col items-center justify-center text-center p-10">
-        <h1 class="text-8xl font-bold mb-6 tracking-tighter" id="title">English-Lang</h1>
-        <p class="text-2xl text-blue-400 opacity-0" id="subtitle">The simplest way to talk to your computer.</p>
-        <button onclick="nextSlide(2)" class="mt-12 px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-full transition-all opacity-0" id="start-btn">Start Visual Tour</button>
+        <h1 class="text-8xl font-bold mb-6 tracking-tighter" id="title">English-Lang <span class="text-blue-500">v2</span></h1>
+        <p class="text-2xl text-blue-400 opacity-0" id="subtitle">The Serious Upgrade. Logic. Loops. Functions.</p>
+        <button onclick="nextSlide(2)" class="mt-12 px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-full transition-all opacity-0" id="start-btn">Explore v2 Features</button>
     </div>
 
-    <!-- Slide 2: Print -->
+    <!-- Slide 2: Loops -->
     <div id="slide-2" class="slide flex-col items-center justify-center p-10">
         <div class="glass p-8 rounded-3xl w-full max-w-2xl mb-12">
-            <p class="text-blue-400 mb-2 mono">Concept 1: Talking</p>
-            <h2 class="text-4xl font-bold mb-6">The "print" command</h2>
-            <div class="bg-black/50 p-6 rounded-xl mono text-xl text-green-400 border border-white/10">
-                <span class="text-white">print</span> "Hello Angelo"
+            <p class="text-blue-400 mb-2 mono">Concept: Automation</p>
+            <h2 class="text-4xl font-bold mb-6">Smart Loops</h2>
+            <div class="bg-black/50 p-6 rounded-xl mono text-xl border border-white/10">
+                for each <span class="text-blue-400">item</span> in <span class="text-yellow-400">"A, B, C"</span> do:
             </div>
         </div>
-        <div id="print-action" class="text-6xl scale-0 opacity-0">👋 Hello Angelo!</div>
-        <button onclick="nextSlide(3)" class="mt-12 text-gray-400 hover:text-white">Next: Memory & Variables →</button>
+        <div id="loop-display" class="flex gap-4">
+            <div class="item-box w-20 h-20 bg-blue-500 rounded-lg flex items-center justify-center text-2xl font-bold scale-0">A</div>
+            <div class="item-box w-20 h-20 bg-blue-500 rounded-lg flex items-center justify-center text-2xl font-bold scale-0">B</div>
+            <div class="item-box w-20 h-20 bg-blue-500 rounded-lg flex items-center justify-center text-2xl font-bold scale-0">C</div>
+        </div>
+        <button onclick="nextSlide(3)" class="mt-12 text-gray-400 hover:text-white">Next: Real Decision Logic →</button>
     </div>
 
-    <!-- Slide 3: Variables -->
+    <!-- Slide 3: Functions -->
     <div id="slide-3" class="slide flex-col items-center justify-center p-10 text-center">
-        <h2 class="text-5xl font-bold mb-12">Memory Boxes</h2>
-        <div class="flex gap-12 items-center">
-            <div class="glass p-6 rounded-2xl mono text-xl">
-                store <span class="text-yellow-400">"Red"</span> as <span class="text-blue-400">color</span>
-            </div>
-            <div class="text-4xl">➜</div>
-            <div id="box" class="w-48 h-48 border-4 border-dashed border-blue-500 rounded-3xl flex items-center justify-center relative">
-                <span class="absolute -top-8 text-blue-400 font-bold">color</span>
-                <div id="box-item" class="w-32 h-32 bg-red-600 rounded-xl shadow-2xl scale-0"></div>
-            </div>
+        <h2 class="text-5xl font-bold mb-8 text-blue-400">Custom Skills</h2>
+        <div class="glass p-8 rounded-3xl mono text-xl max-w-lg mb-12">
+            to <span class="text-green-400">greet</span> do:<br>
+            &nbsp;&nbsp;print "Hello!"<br>
+            end
         </div>
-        <button onclick="nextSlide(4)" class="mt-20 text-gray-400 hover:text-white">Next: The System Bridge →</button>
+        <div class="text-3xl opacity-0" id="func-reveal">Just type <span class="mono text-white bg-blue-600 px-4 py-1 rounded">greet</span> to use it!</div>
+        <button onclick="nextSlide(4)" class="mt-20 text-gray-400 hover:text-white">Next: The v2 Engine →</button>
     </div>
 
-    <!-- Slide 4: System Bridge -->
+    <!-- Slide 4: Outro -->
     <div id="slide-4" class="slide flex-col items-center justify-center p-10">
         <div class="text-center mb-12">
-            <h2 class="text-6xl font-bold mb-4">Infinite Power</h2>
-            <p class="text-xl text-gray-400">Control your entire PC with one sentence.</p>
+            <h2 class="text-7xl font-bold mb-4">You are Ready.</h2>
+            <p class="text-xl text-gray-400">Python power. English simplicity.</p>
         </div>
-        <div class="glass p-8 rounded-3xl mono text-2xl border-l-8 border-l-blue-600">
-            run system command <span class="text-green-400">start chrome</span>
+        <div class="flex gap-4">
+            <a href="https://github.com/milardaangelo-maker/.eng-programming-course" class="px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-all">Go to GitHub</a>
+            <button onclick="nextSlide(1)" class="px-8 py-4 border border-white/20 rounded-full hover:bg-white/5 transition-all">Restart Tour</button>
         </div>
-        <div class="mt-12 flex gap-8">
-            <div class="p-6 bg-white/5 rounded-2xl text-center">
-                <div class="text-4xl mb-2">📁</div>
-                <p class="text-sm">Manage Files</p>
-            </div>
-            <div class="p-6 bg-white/5 rounded-2xl text-center">
-                <div class="text-4xl mb-2">🌐</div>
-                <p class="text-sm">Open Sites</p>
-            </div>
-            <div class="p-6 bg-white/5 rounded-2xl text-center">
-                <div class="text-4xl mb-2">🤖</div>
-                <p class="text-sm">Run AI</p>
-            </div>
-        </div>
-        <button onclick="nextSlide(1)" class="mt-12 px-12 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform">Back to Start</button>
     </div>
 
     <script>
@@ -96,10 +82,10 @@
                 
                 // Trigger specific slide animations
                 if(n === 2) {
-                    gsap.to("#print-action", { scale: 1, opacity: 1, duration: 1, delay: 1, ease: "elastic.out(1, 0.3)" });
+                    gsap.to(".item-box", { scale: 1, stagger: 0.2, duration: 0.8, ease: "elastic.out(1, 0.3)", delay: 0.5 });
                 }
                 if(n === 3) {
-                    gsap.to("#box-item", { scale: 1, duration: 1, delay: 0.5, ease: "bounce.out" });
+                    gsap.to("#func-reveal", { opacity: 1, y: -20, duration: 1, delay: 0.5 });
                 }
             }});
         }

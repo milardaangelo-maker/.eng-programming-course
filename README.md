@@ -1,10 +1,10 @@
-# 🎓 English-Lang Masterclass: Coding in Plain English
+# 🎓 English-Lang v2.0: The Easiest Language in the World
 
-Welcome to the **New & Improved** English-Lang. We have upgraded the engine to support logic, math, and loops while keeping it the easiest language in the world.
-this is the first version of english-lang so we will try to improve it over time
+Welcome to the **New & Improved** English-Lang. We have upgraded the engine to support Functions, Lists, Logic, and Math while keeping it 100% human-readable.
+
 ---
 
-## 🏁 Module 1: The Basics (Output & Time)
+## 🏁 Module 1: The Basics
 Every program starts with communication and timing.
 
 ### 1.1 Printing
@@ -19,7 +19,7 @@ wait 2
 
 ---
 
-## 🧠 Module 2: The Brain (Variables & Input)
+## 🧠 Module 2: Memory & Interaction
 Variables allow your script to "remember" information.
 
 ### 2.1 Storing Data
@@ -29,7 +29,6 @@ print This language was made by {creator}.
 ```
 
 ### 2.2 Asking the User
-You can now ask the person running the script for information.
 ```text
 ask user "What is your favorite color?" as fav_color
 print Oh, {fav_color} is a nice color!
@@ -39,8 +38,6 @@ print Oh, {fav_color} is a nice color!
 
 ## ➗ Module 3: Math Engine
 English-Lang can now handle complex calculations.
-
-### 3.1 Calculate
 ```text
 calculate 10 + 5 * 2 as result
 print The answer is {result}
@@ -48,56 +45,72 @@ print The answer is {result}
 
 ---
 
-## 🔄 Module 4: Control Flow (Loops & Logic)
-This is where English-Lang becomes a "Serious" programming language.
-
-### 4.1 Loops (Repeat)
-Want to do something multiple times? Just say so.
+## 🔄 Module 4: Loops (Scanning Lists)
+You can now process lists of information easily.
 ```text
-repeat 3 times: print I am looping!
-```
-
-### 4.2 Logic (If/Then)
-Check for files before acting on them.
-```text
-if file notes.txt exists then: print I found your notes!
+store "Apple, Banana, Pear" as fruits
+for each f in {fruits} do:
+    print I like {f}!
+end
 ```
 
 ---
 
-## 📂 Module 5: System Mastery (Infinite Power)
+## ⚖️ Module 5: Comparison Logic
+Make your program "think" and make decisions.
+```text
+if age is-greater-than 18 then: print You are an adult.
+if name is-equal-to "Angelo" then: print Welcome back, Boss.
+```
+
+---
+
+## 🛠️ Module 6: Functions (New Skills)
+Group commands together to create a reusable skill.
+```text
+to say hi do:
+    print Hello!
+    print How are you today?
+end
+
+# To use it, just type the name:
+say hi
+```
+
+---
+
+## 📂 Module 7: System Mastery
 Run **any** Windows command using the System Bridge.
 ```text
 run system command dir
-run system command start chrome
+run system command start chrome https://google.com
 ```
 
 ---
 
-## 🌐 Module 6: The Web (Discord)
-```text
-send to discord webhook:URL Hello from the new English-Lang!
-```
-
----
-
-## 🚀 Graduation Project: The Smart Assistant
+## 🚀 Graduation Project: The v2 Assistant
 Copy this into a `.eng` file to see the full power:
 
 ```text
-print Starting your Personal Assistant...
+# Define a skill
+to scan files do:
+    print Scanning directory...
+    run system command dir
+end
+
+print --- English-Lang v2 Assistant ---
 
 ask user "What is your name?" as name
 print Welcome, {name}!
 
-calculate 1 + 1 as check
-print Just checking my brain... 1 + 1 is {check}.
+# Use a loop
+store "CPU, Memory, Disk" as checks
+for each item in {checks} do:
+    print Checking {item}...
+end
 
-print Checking for your secret file...
-if file secret.txt exists then: print I found it! {name}, your secrets are safe.
-
-print Looping for fun...
-repeat 3 times: print Working...
+# Use a function
+scan files
 
 print Done. Have a great day {name}!
 ```
