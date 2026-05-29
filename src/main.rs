@@ -181,12 +181,16 @@ impl Interpreter {
             } else {
                 Command::new("sh").args(["-c", &cmd_str]).status()?;
             };
-        } else if line.to_lowercase().starts_with("send to discord webhook:") {
-            let parts: Vec<&str> = line[25..].splitn(2, ' ').collect();
-            if parts.len() == 2 {
-                let url = parts[0];
-                let msg = self.replace_vars(parts[1]);
-                self.client.post(url).json(&json!({"content": msg})).send().await?;
+        } else {
+            let prefix = "send to discord webhook:";
+            if line.to_lowercase().starts_with(prefix) {
+                let rest = &line[prefix.len()..];
+                let parts: Vec<&str> = rest.splitn(2, ' ').collect();
+                if parts.len() == 2 {
+                    let url = parts[0];
+                    let msg = self.replace_vars(parts[1]);
+                    self.client.post(url).json(&json!({"content": msg})).send().await?;
+                }
             }
         }
 
