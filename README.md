@@ -1,5 +1,7 @@
 # 🎓 English-Lang v2.5 Stable Masterclass
 
+[**View Update History (Changelog)**](./CHANGELOG.md)
+
 Welcome to the **Stable Release** of the Easiest Language in the World. v2.5 standardizes everything so your code is "Machine-Rigid" but "Human-Friendly."
 
 ---
