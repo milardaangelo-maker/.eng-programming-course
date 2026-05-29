@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English-Lang Visual Masterclass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #0f172a; color: white; overflow-x: hidden; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .slide { display: none; height: 100vh; }
+        .slide.active { display: flex; }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Intro -->
+    <div id="slide-1" class="slide active flex-col items-center justify-center text-center p-10">
+        <h1 class="text-8xl font-bold mb-6 tracking-tighter" id="title">English-Lang</h1>
+        <p class="text-2xl text-blue-400 opacity-0" id="subtitle">The simplest way to talk to your computer.</p>
+        <button onclick="nextSlide(2)" class="mt-12 px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-full transition-all opacity-0" id="start-btn">Start Visual Tour</button>
+    </div>
+
+    <!-- Slide 2: Print -->
+    <div id="slide-2" class="slide flex-col items-center justify-center p-10">
+        <div class="glass p-8 rounded-3xl w-full max-w-2xl mb-12">
+            <p class="text-blue-400 mb-2 mono">Concept 1: Talking</p>
+            <h2 class="text-4xl font-bold mb-6">The "print" command</h2>
+            <div class="bg-black/50 p-6 rounded-xl mono text-xl text-green-400 border border-white/10">
+                <span class="text-white">print</span> "Hello Angelo"
+            </div>
+        </div>
+        <div id="print-action" class="text-6xl scale-0 opacity-0">👋 Hello Angelo!</div>
+        <button onclick="nextSlide(3)" class="mt-12 text-gray-400 hover:text-white">Next: Memory & Variables →</button>
+    </div>
+
+    <!-- Slide 3: Variables -->
+    <div id="slide-3" class="slide flex-col items-center justify-center p-10 text-center">
+        <h2 class="text-5xl font-bold mb-12">Memory Boxes</h2>
+        <div class="flex gap-12 items-center">
+            <div class="glass p-6 rounded-2xl mono text-xl">
+                store <span class="text-yellow-400">"Red"</span> as <span class="text-blue-400">color</span>
+            </div>
+            <div class="text-4xl">➜</div>
+            <div id="box" class="w-48 h-48 border-4 border-dashed border-blue-500 rounded-3xl flex items-center justify-center relative">
+                <span class="absolute -top-8 text-blue-400 font-bold">color</span>
+                <div id="box-item" class="w-32 h-32 bg-red-600 rounded-xl shadow-2xl scale-0"></div>
+            </div>
+        </div>
+        <button onclick="nextSlide(4)" class="mt-20 text-gray-400 hover:text-white">Next: The System Bridge →</button>
+    </div>
+
+    <!-- Slide 4: System Bridge -->
+    <div id="slide-4" class="slide flex-col items-center justify-center p-10">
+        <div class="text-center mb-12">
+            <h2 class="text-6xl font-bold mb-4">Infinite Power</h2>
+            <p class="text-xl text-gray-400">Control your entire PC with one sentence.</p>
+        </div>
+        <div class="glass p-8 rounded-3xl mono text-2xl border-l-8 border-l-blue-600">
+            run system command <span class="text-green-400">start chrome</span>
+        </div>
+        <div class="mt-12 flex gap-8">
+            <div class="p-6 bg-white/5 rounded-2xl text-center">
+                <div class="text-4xl mb-2">📁</div>
+                <p class="text-sm">Manage Files</p>
+            </div>
+            <div class="p-6 bg-white/5 rounded-2xl text-center">
+                <div class="text-4xl mb-2">🌐</div>
+                <p class="text-sm">Open Sites</p>
+            </div>
+            <div class="p-6 bg-white/5 rounded-2xl text-center">
+                <div class="text-4xl mb-2">🤖</div>
+                <p class="text-sm">Run AI</p>
+            </div>
+        </div>
+        <button onclick="nextSlide(1)" class="mt-12 px-12 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform">Back to Start</button>
+    </div>
+
+    <script>
+        // Intro Animations
+        gsap.from("#title", { y: 100, opacity: 0, duration: 1.5, ease: "expo.out" });
+        gsap.to("#subtitle", { opacity: 1, duration: 1, delay: 0.8 });
+        gsap.to("#start-btn", { opacity: 1, duration: 1, delay: 1.2 });
+
+        function nextSlide(n) {
+            const current = document.querySelector('.slide.active');
+            const next = document.getElementById('slide-' + n);
+            
+            gsap.to(current, { opacity: 0, scale: 0.9, duration: 0.5, onComplete: () => {
+                current.classList.remove('active');
+                next.classList.add('active');
+                gsap.fromTo(next, { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" });
+                
+                // Trigger specific slide animations
+                if(n === 2) {
+                    gsap.to("#print-action", { scale: 1, opacity: 1, duration: 1, delay: 1, ease: "elastic.out(1, 0.3)" });
+                }
+                if(n === 3) {
+                    gsap.to("#box-item", { scale: 1, duration: 1, delay: 0.5, ease: "bounce.out" });
+                }
+            }});
+        }
+    </script>
+</body>
+</html>
