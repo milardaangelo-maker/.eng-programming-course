@@ -15,6 +15,7 @@ pub struct Function {
 
 pub struct Interpreter {
     variables: HashMap<String, String>,
+    lists: HashMap<String, Vec<String>>,
     functions: HashMap<String, Function>,
     client: reqwest::Client,
 }
@@ -23,6 +24,7 @@ impl Interpreter {
     pub fn new() -> Self {
         Self {
             variables: HashMap::new(),
+            lists: HashMap::new(),
             functions: HashMap::new(),
             client: reqwest::Client::new(),
         }
@@ -45,38 +47,48 @@ impl Interpreter {
                 continue;
             }
 
-            // --- Block Detection (to, for, if-do) ---
-            
-            // 1. Function Definition: to [name] [params] do:
-            let re_to = Regex::new(r#"(?i)^to\s+(\S+)\s*(.*)\s+do:$"#)?;
+            // 1. Function Definition: to [name] do:
+            let re_to = Regex::new(r#"(?i)^to\s+(\S+)\s+do:$"#)?;
             if let Some(cap) = re_to.captures(line) {
                 let name = cap[1].to_string();
-                let params: Vec<String> = cap[2].split_whitespace().map(|s| s.to_string()).collect();
                 let (body, end_idx) = self.grab_block(lines, i + 1)?;
-                self.functions.insert(name, Function { params, body });
+                self.functions.insert(name, Function { params: vec![], body });
                 i = end_idx + 1;
                 continue;
             }
 
             // 2. Loop: for each [item] in [list] do:
-            let re_for = Regex::new(r#"(?i)^for\s+each\s+(\S+)\s+in\s+(.*)\s+do:$"#)?;
+            let re_for = Regex::new(r#"(?i)^for\s+each\s+(\S+)\s+in\s+(\S+)\s+do:$"#)?;
             if let Some(cap) = re_for.captures(line) {
                 let item_var = cap[1].to_string();
-                let list_raw = self.replace_vars(&cap[2]);
+                let list_name = cap[2].to_string();
                 let (body, end_idx) = self.grab_block(lines, i + 1)?;
                 
-                let items: Vec<String> = list_raw.split(',').map(|s| s.trim().to_string()).collect();
-                for item in items {
-                    self.variables.insert(item_var.clone(), item);
+                if let Some(items) = self.lists.get(&list_name).cloned() {
+                    for item in items {
+                        self.variables.insert(item_var.clone(), item);
+                        self.execute_block(&body).await?;
+                    }
+                }
+                i = end_idx + 1;
+                continue;
+            }
+
+            // 3. Simple Repeat: repeat [N] times do:
+            let re_repeat = Regex::new(r#"(?i)^repeat\s+(\d+)\s+times\s+do:$"#)?;
+            if let Some(cap) = re_repeat.captures(line) {
+                let count: u32 = cap[1].parse()?;
+                let (body, end_idx) = self.grab_block(lines, i + 1)?;
+                for _ in 0..count {
                     self.execute_block(&body).await?;
                 }
                 i = end_idx + 1;
                 continue;
             }
 
-            // 3. Logic: if [val] [op] [val] then do:
-            let re_if_block = Regex::new(r#"(?i)^if\s+(.*)\s+(is-equal-to|is-greater-than|is-less-than|contains)\s+(.*)\s+then\s+do:$"#)?;
-            if let Some(cap) = re_if_block.captures(line) {
+            // 4. Logic: if [val] [op] [val] do:
+            let re_if = Regex::new(r#"(?i)^if\s+(.*)\s+(is-equal-to|is-greater-than|is-less-than|contains)\s+(.*)\s+do:$"#)?;
+            if let Some(cap) = re_if.captures(line) {
                 let left = self.replace_vars(&cap[1]);
                 let op = &cap[2];
                 let right = self.replace_vars(&cap[3]);
@@ -96,57 +108,18 @@ impl Interpreter {
         Ok(())
     }
 
-    #[async_recursion]
     pub async fn execute_line(&mut self, line: &str) -> Result<(), Box<dyn std::error::Error>> {
         let line = line.trim();
 
-        // 1. Single-line IF: if [v] [op] [v] then: [cmd]
-        let re_if_single = Regex::new(r#"(?i)^if\s+(.*)\s+(is-equal-to|is-greater-than|is-less-than|contains)\s+(.*)\s+then:\s*(.*)$"#)?;
-        if let Some(cap) = re_if_single.captures(line) {
-            let left = self.replace_vars(&cap[1]);
-            let op = &cap[2];
-            let right = self.replace_vars(&cap[3]);
-            let cmd = &cap[4];
-            if self.check_condition(&left, op, &right) {
-                self.execute_line(cmd).await?;
-            }
-            return Ok(());
-        }
-
-        // 2. Ask user "[PROMPT]" as [VAR]
-        let re_ask = Regex::new(r#"(?i)^ask\s+user\s+"(.*)"\s+as\s+(\S+)$"#)?;
-        if let Some(cap) = re_ask.captures(line) {
-            let prompt = self.replace_vars(&cap[1]);
-            let var = cap[2].to_string();
-            print!("{} ", prompt);
-            io::stdout().flush()?;
-            let mut input = String::new();
-            io::stdin().read_line(&mut input)?;
-            self.variables.insert(var, input.trim().to_string());
-            return Ok(());
-        }
-
-        // 3. Calculate [EXPR] as [VAR]
-        let re_calc = Regex::new(r"(?i)^calculate\s+(.*)\s+as\s+(\S+)$")?;
-        if let Some(cap) = re_calc.captures(line) {
-            let expr = self.replace_vars(&cap[1]);
-            let var = cap[2].to_string();
-            match eval(&expr) {
-                Ok(val) => { self.variables.insert(var, val.to_string()); },
-                Err(e) => println!("!! Math Error: {}", e),
-            }
-            return Ok(());
-        }
-
-        // 4. Print [MESSAGE]
-        let re_print = Regex::new(r"(?i)^print\s+(.*)$")?;
-        if let Some(cap) = re_print.captures(line) {
+        // 1. Say/Print
+        let re_say = Regex::new(r#"(?i)^(?:say|print)\s+(.*)$"#)?;
+        if let Some(cap) = re_say.captures(line) {
             println!("{}", self.replace_vars(&cap[1]));
             return Ok(());
         }
 
-        // 5. Store [VALUE] as [VAR]
-        let re_store = Regex::new(r"(?i)^store\s+(.*)\s+as\s+(\S+)$")?;
+        // 2. Store Value
+        let re_store = Regex::new(r#"(?i)^store\s+(.*)\s+as\s+(\S+)$"#)?;
         if let Some(cap) = re_store.captures(line) {
             let val = cap[1].trim().trim_matches('"').to_string();
             let var = cap[2].to_string();
@@ -154,41 +127,66 @@ impl Interpreter {
             return Ok(());
         }
 
-        // 6. Function Call: [name] [args]
-        let words: Vec<&str> = line.split_whitespace().collect();
-        if !words.is_empty() {
-            let func_name = words[0];
-            if let Some(func) = self.functions.get(func_name).cloned() {
-                let args = &words[1..];
-                for (j, param) in func.params.iter().enumerate() {
-                    if let Some(arg) = args.get(j) {
-                        self.variables.insert(param.clone(), arg.trim_matches('"').to_string());
-                    }
-                }
-                self.execute_block(&func.body).await?;
-                return Ok(());
-            }
+        // 3. Store List
+        let re_list = Regex::new(r#"(?i)^create\s+list\s+"(.*)"\s+as\s+(\S+)$"#)?;
+        if let Some(cap) = re_list.captures(line) {
+            let items: Vec<String> = cap[1].split(',').map(|s| s.trim().to_string()).collect();
+            let var = cap[2].to_string();
+            self.lists.insert(var, items);
+            return Ok(());
         }
 
-        // 7. System Bridge
-        let re_system = Regex::new(r"(?i)^run system command\s+(.*)$")?;
-        if let Some(cap) = re_system.captures(line) {
-            let cmd_str = self.replace_vars(&cap[1]);
+        // 4. Calculate
+        let re_calc = Regex::new(r#"(?i)^calc(?:ulate)?\s+(.*)\s+as\s+(\S+)$"#)?;
+        if let Some(cap) = re_calc.captures(line) {
+            let expr = self.replace_vars(&cap[1]);
+            let var = cap[2].to_string();
+            if let Ok(val) = eval(&expr) {
+                self.variables.insert(var, val.to_string());
+            }
+            return Ok(());
+        }
+
+        // 5. Ask
+        let re_ask = Regex::new(r#"(?i)^ask\s+"(.*)"\s+as\s+(\S+)$"#)?;
+        if let Some(cap) = re_ask.captures(line) {
+            print!("{} ", self.replace_vars(&cap[1]));
+            io::stdout().flush()?;
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)?;
+            self.variables.insert(cap[2].to_string(), input.trim().to_string());
+            return Ok(());
+        }
+
+        // 6. Function Call
+        if let Some(func) = self.functions.get(line).cloned() {
+            self.execute_block(&func.body).await?;
+            return Ok(());
+        }
+
+        // 7. Wait
+        let re_wait = Regex::new(r#"(?i)^wait\s+(\d+)$"#)?;
+        if let Some(cap) = re_wait.captures(line) {
+            let secs: u64 = cap[1].parse()?;
+            tokio::time::sleep(tokio::time::Duration::from_secs(secs)).await;
+            return Ok(());
+        }
+
+        // 8. System/Discord
+        if line.to_lowercase().starts_with("run system command") {
+            let cmd_str = self.replace_vars(&line[19..]);
             if cfg!(target_os = "windows") {
                 Command::new("cmd").args(["/C", &cmd_str]).status()?;
             } else {
                 Command::new("sh").args(["-c", &cmd_str]).status()?;
             };
-            return Ok(());
-        }
-
-        // 8. Discord
-        let re_discord = Regex::new(r"(?i)^send to discord webhook:(\S+)\s+(.*)$")?;
-        if let Some(cap) = re_discord.captures(line) {
-            let url = &cap[1];
-            let msg = self.replace_vars(&cap[2]);
-            self.client.post(url).json(&json!({"content": msg})).send().await?;
-            return Ok(());
+        } else if line.to_lowercase().starts_with("send to discord webhook:") {
+            let parts: Vec<&str> = line[25..].splitn(2, ' ').collect();
+            if parts.len() == 2 {
+                let url = parts[0];
+                let msg = self.replace_vars(parts[1]);
+                self.client.post(url).json(&json!({"content": msg})).send().await?;
+            }
         }
 
         Ok(())
@@ -201,19 +199,19 @@ impl Interpreter {
 
         while current_idx < lines.len() {
             let line = lines[current_idx].trim();
-            if line.ends_with("do:") { depth += 1; }
-            if line == "end" {
+            if line.to_lowercase().ends_with("do:") { depth += 1; }
+            if line.to_lowercase() == "end" {
                 depth -= 1;
                 if depth == 0 { return Ok((block, current_idx)); }
             }
             block.push(lines[current_idx].clone());
             current_idx += 1;
         }
-        Err("Missing 'end' for block".into())
+        Err("Error: Each 'do:' must have a matching 'end'".into())
     }
 
     fn check_condition(&self, left: &str, op: &str, right: &str) -> bool {
-        match op {
+        match op.to_lowercase().as_str() {
             "is-equal-to" => left == right,
             "is-greater-than" => left.parse::<f64>().unwrap_or(0.0) > right.parse::<f64>().unwrap_or(0.0),
             "is-less-than" => left.parse::<f64>().unwrap_or(0.0) < right.parse::<f64>().unwrap_or(0.0),
@@ -235,7 +233,7 @@ impl Interpreter {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
     if args.len() < 2 {
-        println!("English-Lang v2.0 - The Easiest Language in the World");
+        println!("English-Lang v2.5 Stable - The Easiest Language in the World");
         return Ok(());
     }
     let mut interpreter = Interpreter::new();
