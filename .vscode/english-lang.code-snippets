@@ -1,44 +1,64 @@
 {
-    "Print Message": {
-        "prefix": "print",
+    "Say Message": {
+        "prefix": "say",
         "body": [
-            "print ${1:message}"
+            "say \"${1:message}\""
         ],
-        "description": "Show text on the screen"
+        "description": "Show text on the screen (v2.5 standard)"
     },
-    "Store Variable": {
-        "prefix": "store",
+    "Create List": {
+        "prefix": "create list",
         "body": [
-            "store \"${1:value}\" as ${2:variable_name}"
+            "create list \"${1:Item1, Item2, Item3}\" as ${2:list_name}"
         ],
-        "description": "Save information in a variable"
+        "description": "Create a real list of items"
     },
-    "Discord Webhook": {
-        "prefix": "send to discord",
+    "For Each Loop": {
+        "prefix": "for each",
         "body": [
-            "send to discord webhook:${1:url} ${2:message}"
+            "for each ${1:item} in ${2:list_name} do:",
+            "\t$0",
+            "end"
         ],
-        "description": "Send a message to a Discord server"
+        "description": "Loop through every item in a list"
     },
-    "System Command": {
-        "prefix": "run system",
+    "If Condition": {
+        "prefix": "if",
         "body": [
-            "run system command ${1:command}"
+            "if ${1:value} ${2|is-equal-to,is-greater-than,is-less-than,contains|} ${3:value} do:",
+            "\t$0",
+            "end"
         ],
-        "description": "Run any Windows terminal command"
+        "description": "Make a decision based on logic"
     },
-    "Create File": {
-        "prefix": "create file",
+    "Define Skill (Function)": {
+        "prefix": "to",
         "body": [
-            "create file ${1:filename} with content ${2:text}"
+            "to ${1:skill_name} do:",
+            "\t$0",
+            "end"
         ],
-        "description": "Create a new text file"
+        "description": "Teach the language a new reusable skill"
     },
-    "Wait Timer": {
-        "prefix": "wait",
+    "Calculate": {
+        "prefix": "calculate",
         "body": [
-            "wait ${1:seconds}"
+            "calculate ${1:expression} as ${2:variable_name}"
         ],
-        "description": "Pause the script for a few seconds"
+        "description": "Perform mathematical operations"
+    },
+    "Ask User": {
+        "prefix": "ask",
+        "body": [
+            "ask \"${1:question}\" as ${2:variable_name}"
+        ],
+        "description": "Ask the user for input"
+    },
+    "End Block": {
+        "prefix": "end",
+        "body": [
+            "end"
+        ],
+        "description": "Close a loop, if-statement, or function"
     }
 }
