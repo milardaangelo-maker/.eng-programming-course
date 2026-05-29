@@ -1,0 +1,44 @@
+{
+    "Print Message": {
+        "prefix": "print",
+        "body": [
+            "print ${1:message}"
+        ],
+        "description": "Show text on the screen"
+    },
+    "Store Variable": {
+        "prefix": "store",
+        "body": [
+            "store \"${1:value}\" as ${2:variable_name}"
+        ],
+        "description": "Save information in a variable"
+    },
+    "Discord Webhook": {
+        "prefix": "send to discord",
+        "body": [
+            "send to discord webhook:${1:url} ${2:message}"
+        ],
+        "description": "Send a message to a Discord server"
+    },
+    "System Command": {
+        "prefix": "run system",
+        "body": [
+            "run system command ${1:command}"
+        ],
+        "description": "Run any Windows terminal command"
+    },
+    "Create File": {
+        "prefix": "create file",
+        "body": [
+            "create file ${1:filename} with content ${2:text}"
+        ],
+        "description": "Create a new text file"
+    },
+    "Wait Timer": {
+        "prefix": "wait",
+        "body": [
+            "wait ${1:seconds}"
+        ],
+        "description": "Pause the script for a few seconds"
+    }
+}

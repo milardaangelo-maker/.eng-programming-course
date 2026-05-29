@@ -1,6 +1,6 @@
 # 🎓 English-Lang Masterclass: Coding in Plain English
 
-Welcome to the official course for **English-Lang**. This language was designed to be powerful, portable, and—most importantly—written exactly like you speak.
+Welcome to the **New & Improved** English-Lang. We have upgraded the engine to support logic, math, and loops while keeping it the easiest language in the world.
 
 ---
 
@@ -8,93 +8,102 @@ Welcome to the official course for **English-Lang**. This language was designed 
 Every program starts with communication and timing.
 
 ### 1.1 Printing
-To show text on the screen, use the `print` command followed by your message.
 ```text
 print Hello, world!
 ```
 
 ### 1.2 Waiting
-To make your script pause (useful for automation), use the `wait` command followed by the number of seconds.
 ```text
-print I am going to sleep...
-wait 5
-print I am awake!
+wait 2
 ```
 
 ---
 
-## 🧠 Module 2: The Brain (Variables)
+## 🧠 Module 2: The Brain (Variables & Input)
 Variables allow your script to "remember" information.
 
 ### 2.1 Storing Data
-Use the `store [VALUE] as [NAME]` syntax.
 ```text
 store "Angelo" as creator
-```
-
-### 2.2 Using Data
-To use a stored variable, wrap its name in curly braces `{}`.
-```text
 print This language was made by {creator}.
 ```
 
----
-
-## 📂 Module 3: System Mastery (Infinite Power)
-This is where English-Lang becomes "General Purpose."
-
-### 3.1 Creating Files
-You can generate text files instantly.
+### 2.2 Asking the User
+You can now ask the person running the script for information.
 ```text
-create file notes.txt with content This is a note for {creator}.
-```
-
-### 3.2 The "System Bridge"
-The `run system command` is your secret weapon. It allows you to run **any** command that works in your Command Prompt (CMD).
-*   **List files:** `run system command dir`
-*   **Open a website:** `run system command start https://google.com`
-*   **Shutdown (Be careful!):** `run system command shutdown /s`
-
----
-
-## 🌐 Module 4: The Web (Discord)
-Connecting your script to the internet.
-
-### 4.1 Discord Webhooks
-Send notifications to your Discord server in one line.
-```text
-send to discord webhook:YOUR_LINK_HERE Hello from English-Lang!
+ask user "What is your favorite color?" as fav_color
+print Oh, {fav_color} is a nice color!
 ```
 
 ---
 
-## 🚀 Graduation Project: The Automated Reporter
-Let's combine everything into a single automation script.
+## ➗ Module 3: Math Engine
+English-Lang can now handle complex calculations.
 
-**Goal:** Create a file, read it, and send a notification.
-
+### 3.1 Calculate
 ```text
-# Step 1: Set up data
-store "Report_v1" as filename
-store "https://discord.com/api/webhooks/..." as my_webhook
-
-# Step 2: Action
-print Generating {filename}...
-create file {filename}.txt with content Script finished successfully at 12:00.
-
-# Step 3: Verify & Notify
-print Sending update to Discord...
-send to discord webhook:{my_webhook} The {filename} is ready!
-run system command type {filename}.txt
-
-print Mission Accomplished.
+calculate 10 + 5 * 2 as result
+print The answer is {result}
 ```
 
 ---
 
-## 🛠️ How to Run Your Scripts
-1. Save your code in a file ending in `.eng` (e.g., `myscript.eng`).
-2. Open CMD or PowerShell.
-3. Type: `.\English-Lang.exe myscript.eng`
+## 🔄 Module 4: Control Flow (Loops & Logic)
+This is where English-Lang becomes a "Serious" programming language.
 
-**You are now a Master of English-Lang!**
+### 4.1 Loops (Repeat)
+Want to do something multiple times? Just say so.
+```text
+repeat 3 times: print I am looping!
+```
+
+### 4.2 Logic (If/Then)
+Check for files before acting on them.
+```text
+if file notes.txt exists then: print I found your notes!
+```
+
+---
+
+## 📂 Module 5: System Mastery (Infinite Power)
+Run **any** Windows command using the System Bridge.
+```text
+run system command dir
+run system command start chrome
+```
+
+---
+
+## 🌐 Module 6: The Web (Discord)
+```text
+send to discord webhook:URL Hello from the new English-Lang!
+```
+
+---
+
+## 🚀 Graduation Project: The Smart Assistant
+Copy this into a `.eng` file to see the full power:
+
+```text
+print Starting your Personal Assistant...
+
+ask user "What is your name?" as name
+print Welcome, {name}!
+
+calculate 1 + 1 as check
+print Just checking my brain... 1 + 1 is {check}.
+
+print Checking for your secret file...
+if file secret.txt exists then: print I found it! {name}, your secrets are safe.
+
+print Looping for fun...
+repeat 3 times: print Working...
+
+print Done. Have a great day {name}!
+```
+
+---
+
+## 🛠️ How to Run
+1. Save as `.eng`.
+2. Double-click or run: `.\English-Lang.exe myscript.eng`
