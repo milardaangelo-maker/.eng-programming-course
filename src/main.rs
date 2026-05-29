@@ -114,7 +114,8 @@ impl Interpreter {
         // 1. Say/Print
         let re_say = Regex::new(r#"(?i)^(?:say|print)\s+(.*)$"#)?;
         if let Some(cap) = re_say.captures(line) {
-            println!("{}", self.replace_vars(&cap[1]));
+            let msg = self.replace_vars(&cap[1]);
+            println!("{}", msg.trim().trim_matches('"'));
             return Ok(());
         }
 
