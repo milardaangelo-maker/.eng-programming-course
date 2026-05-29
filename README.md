@@ -1,122 +1,110 @@
-# 🎓 English-Lang v2.0: The Easiest Language in the World
+# 🎓 English-Lang v2.5 Stable Masterclass
 
-Welcome to the **New & Improved** English-Lang. We have upgraded the engine to support Functions, Lists, Logic, and Math while keeping it 100% human-readable.
+Welcome to the **Stable Release** of the Easiest Language in the World. v2.5 standardizes everything so your code is "Machine-Rigid" but "Human-Friendly."
 
 ---
 
-## 🏁 Module 1: The Basics
-Every program starts with communication and timing.
+## 🛠️ The Core Rules
+1. **Verbs First**: Every line starts with a clear action (Say, Ask, Store, Calculate).
+2. **Blocks**: Every complex command starts with `do:` and MUST end with `end`.
+3. **Variables**: Use `{name}` to use a stored value inside a sentence.
 
-### 1.1 Printing
-```text
-print Hello, world!
-```
+---
 
-### 1.2 Waiting
+## 🏁 Module 1: Communication
 ```text
+say "Hello World"
 wait 2
+ask "What is your name?" as username
+say "Nice to meet you, {username}!"
 ```
 
 ---
 
-## 🧠 Module 2: Memory & Interaction
-Variables allow your script to "remember" information.
-
-### 2.1 Storing Data
+## 🧠 Module 2: Memory & Lists
+v2.5 introduces **Real Lists** for processing groups of items.
 ```text
+# Simple storage
 store "Angelo" as creator
-print This language was made by {creator}.
-```
 
-### 2.2 Asking the User
-```text
-ask user "What is your favorite color?" as fav_color
-print Oh, {fav_color} is a nice color!
+# Real Lists
+create list "Apple, Banana, Cherry" as fruits
+
+for each f in fruits do:
+    say "I am eating a {f}"
+end
 ```
 
 ---
 
 ## ➗ Module 3: Math Engine
-English-Lang can now handle complex calculations.
 ```text
 calculate 10 + 5 * 2 as result
-print The answer is {result}
+say "The answer is {result}"
 ```
 
 ---
 
-## 🔄 Module 4: Loops (Scanning Lists)
-You can now process lists of information easily.
+## ⚖️ Module 4: Decision Logic
+Use `is-equal-to`, `is-greater-than`, `is-less-than`, or `contains`.
 ```text
-store "Apple, Banana, Pear" as fruits
-for each f in {fruits} do:
-    print I like {f}!
+if {result} is-greater-than 15 do:
+    say "That is a big number!"
 end
 ```
 
 ---
 
-## ⚖️ Module 5: Comparison Logic
-Make your program "think" and make decisions.
+## 🏗️ Module 5: Custom Skills (Functions)
+Teach the language new tricks.
 ```text
-if age is-greater-than 18 then: print You are an adult.
-if name is-equal-to "Angelo" then: print Welcome back, Boss.
-```
-
----
-
-## 🛠️ Module 6: Functions (New Skills)
-Group commands together to create a reusable skill.
-```text
-to say hi do:
-    print Hello!
-    print How are you today?
+to cleanup do:
+    say "Cleaning up temporary files..."
+    run system command del *.tmp
 end
 
-# To use it, just type the name:
-say hi
+# Use it by just typing the name:
+cleanup
 ```
 
 ---
 
-## 📂 Module 7: System Mastery
-Run **any** Windows command using the System Bridge.
+## 📂 Module 6: System Bridge
 ```text
+run system command start chrome
 run system command dir
-run system command start chrome https://google.com
 ```
 
 ---
 
-## 🚀 Graduation Project: The v2 Assistant
-Copy this into a `.eng` file to see the full power:
+## 🚀 Graduation Project: The Pro Assistant
+Save this as `pro.eng` to see everything working perfectly:
 
 ```text
-# Define a skill
-to scan files do:
-    print Scanning directory...
-    run system command dir
+print --- English-Lang v2.5 Stable Assistant ---
+
+# 1. Ask and calculate
+ask "Enter a number:" as num
+calculate {num} * {num} as squared
+say "The square of {num} is {squared}."
+
+# 2. Logic Check
+if {squared} is-greater-than 100 do:
+    say "Wow, that is a huge result!"
 end
 
-print --- English-Lang v2 Assistant ---
-
-ask user "What is your name?" as name
-print Welcome, {name}!
-
-# Use a loop
-store "CPU, Memory, Disk" as checks
-for each item in {checks} do:
-    print Checking {item}...
+# 3. List Processing
+create list "Logs, Backups, Reports" as folders
+for each folder in folders do:
+    say "Creating {folder}..."
+    run system command mkdir {folder}
 end
 
-# Use a function
-scan files
-
-print Done. Have a great day {name}!
+say "All tasks complete."
 ```
 
 ---
 
 ## 🛠️ How to Run
-1. Save as `.eng`.
-2. Double-click or run: `.\English-Lang.exe myscript.eng`
+1. Save your file with a **`.eng`** extension.
+2. Double-click it or run: `.\English-Lang.exe myscript.eng`
