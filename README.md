@@ -1,7 +1,7 @@
 # 🎓 English-Lang Masterclass: Coding in Plain English
 
 Welcome to the **New & Improved** English-Lang. We have upgraded the engine to support logic, math, and loops while keeping it the easiest language in the world.
-
+this is the first version of english-lang so we will try to improve it over time
 ---
 
 ## 🏁 Module 1: The Basics (Output & Time)
